@@ -1,0 +1,52 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToDo</title>
+  <link rel="stylesheet" href="./ToDo.css">
+</head>
+<body>
+  <div class="list-box">
+    <h1>To Do List</h1>
+    <div class="write-box">
+      <input type="text" class="text-basic">
+      <button type="button" id="btnAdd">추가</button>
+    </div>
+    <table class="list-table">
+      <colgroup>
+        <col width="10%">
+        <col width="90%">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>check</th>
+          <th>To Do List</th>
+        </tr>
+      </thead>
+      <tbody id="listBody">
+        <tr>
+          <td>
+            <input type="checkbox" class="btn-chk">
+          </td>
+          <td>
+            예림
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input type="checkbox" class="btn-chk">
+          </td>
+          <td>
+            todolist
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="btn-area">
+      <button type="button" id="DeleteSel">선택삭제</button>
+      <button type="button" id="btnDellLast">마지막 항목 삭제</button>
+      <button type="button" id="btnDelAll">전체 삭제</button>
+    </div>
+  </div>
+</body>
+</html>
