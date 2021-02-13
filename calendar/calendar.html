@@ -1,0 +1,36 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>calendar</title>
+  <link rel="stylesheet" href="./calendar.css">
+</head>
+<body>
+  <div class="container">
+    <div class="calendar">
+      <div class="calendarHeadFix">
+        <button type="button" class="btnCalPrev"></button>
+        <span class="calMonth"></span>
+        <span class="calYear"></span>
+        <button type="button" class="btnCalNext"></button>
+      </div>
+      <table class="calTable">
+        <thead>
+          <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+          </tr>
+        </thead>
+        <tbody class="calBody"></tbody>
+      </table>
+    </div>
+  </div>
+  <script src="./calendar.js"></script>
+</body>
+</html>
