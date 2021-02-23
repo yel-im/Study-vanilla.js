@@ -11,14 +11,15 @@
 <body>
   <div class="calendarFix">
     <div class="calendarBox">
-      <div class="calendarHead fix">
-        <button type="button" class="btnCal prev"></button>
-        <span class="calMonth"></span>
-        <span class="calYear"></span>
-        <button type="button" class="btnCal next"></button>
-      </div>
-      <table class="calTable">
+      <table id="calTable">
         <thead>
+          <tr>
+            <td id="prevBtn"><input type="button" value="<"></td>
+            <td id="YM" colspan="3">year-month</td>
+            <td id="nextBtn"><input type="button" value=">"></td>
+          </tr>
+        </thead>
+        <tbody class="calBody">
           <tr>
             <th>Sun</th>
             <th>Mon</th>
@@ -28,8 +29,7 @@
             <th>Fri</th>
             <th>Sat</th>
           </tr>
-        </thead>
-        <tbody class="calBody"></tbody>
+        </tbody>
       </table>
     </div>
   </div>
