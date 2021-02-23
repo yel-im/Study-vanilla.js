@@ -1,121 +1,95 @@
-const init = {
-  monList: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-  today: new Date(),
-  monForChange: new Date().getMonth(),
-  activeDate: new Date(),
-  getFirstDay: (yy, mm) => new Date(yy, mm, 1),
-  getLastDay: (yy, mm) => new Date(yy, mm + 1, 0),
-  nextMonth: function () {
-    let d = new Date();
-    d.setDate(1);
-    d.setDate(++this.monForChange);
-    this.activeDate = d;
-    return d;
-  },
-  prevMonth: function () {
-    let d = new Date();
-    d.setDate(1);
-    d.setMonth(--this.monForChange);
-    this.activeDate = d;
-    return d;
-  },
-  addZero: (num) => (num < 10) ? '0' + num : num,
-  activeDTag: null,
-  getIndex: function (node) {
-    let index = 0;
-    while (node = node.previousElementSibling) {
-      index++;
-    }
-    return index;
+document.getElementById('prevBtn').addEventListener('click', prevMonth); // 전 달 버튼
+document.getElementById('nextBtn').addEventListener('click', nextMonth); // 다음 달 버튼
+
+let today = new Date();
+let year = today.getFullYear();
+let month = today.getMonth();
+let YM = year + "년 " + (month + 1) + "월"; // 월은 0~11
+
+document.getElementById("YM").innerHTML = YM;
+
+let firstDate = new Date(year, month, 1).getDate();
+let lastDate = new Date(year, month + 1, 0).getDate(); // month에 +1을 해 다음달의 0번째날인 이번달의 마지막날을 구함 
+let firstDay = new Date(year, month, 1).getDay();
+
+let calendar = document.getElementById("calTable");
+
+// 달력 build 함수
+function setCalendar() {
+  let row = calendar.insertRow();
+
+  for (i = 0; i < firstDay; i++) {
+    cell = row.insertCell();
   }
-};
+  // 첫 요일이 나오기 전까지 공백의 cell을 만듦
 
-const $calBody = document.querySelector('.calBody');
-const $btnNext = document.querySelector('.btnCal.next');
-const $btnPrev = document.querySelector('.btnCal.prev');
-
-/**
- * @param {date} fullDate
- */
-
- function loadYYMM (fullDate) {
-   let yy = fullDate.getFullYear();
-   let mm = fullDate.getMonth();
-   let firstDay = init.getFirstDay(yy, mm);
-   let lastDay = init.getLastDay(yy, mm);
-   let markToday;
-
-   if (mm === init.today.getMonth() && yy === init.today.getFullYear()) {
-     markToday = init.today,getDate();
-   }
-
-   document.querySelector('.calMonth').textContent = init.monList[mm];
-   document.querySelector('.calYear').textContent = yy;
-
-  let trtd = '';
-  let startCount;
-  let countDay = 0;
-  for (let i = 0; i < 6; i++) {
-    trtd += '<tr>';
-    for (let j = 0; j < 7; j++) {
-      if (i === 0 && !startCount && j === firstDay.getDay()) {
-        startCount = 1;
-      }
-      if (!startCount) {
-        trtd += '<td>'
-      } else {
-        let fullDate = yy + '.' + init.addZero(mm + 1) + '.' + init.addZero(countDay + 1);
-        trtd += '<td class="day';
-        trtd += (markToday && markToday === countDay + 1) ? ' today" ' : '"';
-        trtd += ` data-date="${countDay + 1}" data-fdate="${fullDate}">`;
-      }
-      trtd += (startCount) ? ++countDay : '';
-      if (countDay === lastDay.getDate()) { 
-        startCount = 0; 
-      }
-      trtd += '</td>';
-    }
-    trtd += '</tr>';
+  for (i = 1; i <= lastDate; i++) { // 마지막날이 오기 전까지 i를 cell에 넣음
+    if (firstDay != 7) {
+      cell = row.insertCell();
+      cell.setAttribute('id', [i]);
+      cell.innerHTML = i;
+      firstDay += 1;
+    } // 첫 날부터 토요일까지 cell을 추가하며 i 날짜 출력
+    else {
+      row = calendar.insertRow();
+      cell = row.insertCell();
+      cell.setAttribute('id', [i]);
+      cell.innerHTML = i;
+      firstDay = firstDay - 6;
+    } // firstDay가 7이 되어 다시 일요일이 돌아오면 row와 cell을 추가해 날짜 출력
+    // 다시 firstDay를 1로(월요일) 만들어 if문을 다시 실행 
   }
-  $calBody.innerHTML = trtd;
 }
-/**
- * @param {string} val
- */
-function createNewList (val) {
-  let id = new Date().getTime() + '';
-  let yy = init.activeDate.getFullYear();
-  let mm = init.activeDate.getMonth() + 1;
-  let dd = init.activeDate.getDate();
-  const $target = $calBody.querySelector(`.day[data-date="${dd}"]`);
+setCalendar();
 
-  let date = yy + '.' + init.addZero(mm) + '.' + init.addZero(dd);
-
-  let eventData = {};
-  eventData['date'] = date;
-  eventData['memo'] = val;
-  eventData['complete'] = false;
-  eventData['id'] = id;
-  init.event.push(eventData);
-  $todoList.appendChild(createLi(id, val, date));
+// 오늘 날짜에 색깔을 채워주는 함수
+window.onload = function() {
+  let todayDate = today.getDate()
+  for(i=1; i<=lastDate; i++){
+    let setId = document.getElementById([i])
+    if(todayDate == setId.getAttribute('id')){
+      setId.bgColor = "yellow";
+    }
+  }
 }
 
-loadYYMM(init.today);
-loadDate(init.today.getDate(), init.today.getDay());
-
-$btnNext.addEventListener('click', () => loadYYMM(init.nextMonth()));
-$btnPrev.addEventListener('click', () => loadYYMM(init.prevMonth()));
-
-$calBody.addEventListener('click', (e) => {
-  if (e.target.classList.contains('day')) {
-    if (init.activeDTag) {
-      init.activeDTag.classList.remove('dayActive');
-    }
-    let day = Number(e.target.textContent);
-    loadDate(day, e.target.cellIndex);
-    e.target.classList.add('dayActive');
-    init.activeDTag = e.target;
-    init.activeDate.setDate(day);
-    reloadTodo();
+// 왼쪽 버튼을 눌렀을 때의 함수
+function prevMonth() {
+  while (calendar.rows.length > 2) { // YM과 요일을 제외한 row를 지움
+    calendar.deleteRow(calendar.rows.length-1);
   }
-});
+
+  month = month-1;
+  // 한 달 씩 뒤로
+  if(month === -1) {
+    year = year - 1;
+    month = month + 12;
+  }
+  YM = year + "년 " + (month + 1) + "월";
+  document.getElementById("YM").innerHTML = YM;
+  firstDate = new Date(year, month, 1).getDate();
+  lastDate = new Date(year, month+1, 0).getDate();
+  firstDay = new Date(year, month, 1).getDay();
+  setCalendar();
+}
+
+// 오른쪽 버튼을 눌렀을 때의 함수
+function nextMonth() {
+  while (calendar.rows.length > 2) {
+    calendar.deleteRow(calendar.rows.length-1);
+  }
+  
+  month = month+1;
+
+  if(month === 12) {
+    year = year + 1;
+    month = month -12;
+  }
+
+  YM = year + "년 " + (month+1) + "월";
+  document.getElementById("YM").innerHTML = YM;
+  firstDate = new Date(year, month, 1).getDate();
+  lastDate = new Date(year, month+1, 0).getDate();
+  firstDay = new Date(year, month, 1).getDay();
+  setCalendar();
+}
