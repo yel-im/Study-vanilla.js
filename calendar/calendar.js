@@ -48,7 +48,7 @@ window.onload = function() {
   for(i=1; i<=lastDate; i++){
     let setId = document.getElementById([i])
     if(todayDate == setId.getAttribute('id')){
-      setId.bgColor = "yellow";
+      setId.setAttribute('class','todayColor');
     }
   }
 }
