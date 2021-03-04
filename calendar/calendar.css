@@ -36,3 +36,11 @@ thead button {
   color:  #707070;
   border: none;
 }
+
+tr th:nth-child(1) {
+  color: red
+}
+
+tr th:nth-child(7) {
+  color: blue
+}
